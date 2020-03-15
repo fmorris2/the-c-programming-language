@@ -1,7 +1,21 @@
 #include <stdio.h>
 
+/*
+* This program contains the solution to the following exercises:
+*	Exercise 1-3
+*		Modify the temperature conversion program to print a heading above
+*		the table.
+*	Exercise 1-4
+*		Write a program to print the corresponding Celsius to Fahrenheit table.
+*/
+
+
 float convertFahrenheitToCelsius(float fahr) {
 	return (5.0 / 9.0) * (fahr - 32.0);
+}
+
+float convertCelsiusToFahrenheit(float cels) {
+	return ((9.0 / 5.0) * cels) + 32.0;
 }
 
 void printFahrToCelsConversionTable(float minTemp, float maxTemp,
