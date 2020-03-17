@@ -61,5 +61,6 @@ void printCelsToFahrConversionTable(float minTemp, float maxTemp,
 */
 main() {
 	printFahrToCelsConversionTable(0,200,20);
+	printf("\n");
 	printCelsToFahrConversionTable(0,200,20);
 }
