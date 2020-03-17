@@ -9,7 +9,6 @@
 *		Write a program to print the corresponding Celsius to Fahrenheit table.
 */
 
-
 float convertFahrenheitToCelsius(float fahr) {
 	return (5.0 / 9.0) * (fahr - 32.0);
 }
