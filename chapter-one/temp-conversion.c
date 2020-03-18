@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 
 /*
 * This program contains the solution to the following exercises:
@@ -7,6 +8,9 @@
 *		the table.
 *	Exercise 1-4
 *		Write a program to print the corresponding Celsius to Fahrenheit table.
+*	Exercise 1-5
+*		Modify the temperature conversion program to print the table in reverse
+*		order.
 */
 
 float convertFahrenheitToCelsius(float fahr) {
@@ -17,23 +21,48 @@ float convertCelsiusToFahrenheit(float cels) {
 	return ((9.0 / 5.0) * cels) + 32.0;
 }
 
+bool validateBounds(float startTemp, float endTemp, float stepSize) {
+	
+	if(stepSize == 0) {
+		return false;
+	}	
+
+	if(startTemp < endTemp && stepSize < 0) {
+		return false;
+	}
+
+	if(startTemp > endTemp && stepSize > 0) {
+		return false;
+	}
+
+	return true;
+}
+
 void printConversionTable(char* title, char fromUnit, char toUnit,
-float (*conversionFunc)(float),  float minTemp, float maxTemp,
+float (*conversionFunc)(float), float startTemp, float endTemp,
 float stepSize) {
+	
+	if(!validateBounds(startTemp, endTemp, stepSize)) {
+		printf("Your start, end, and step parameters must allow natural termination of the loop.");
+		return;
+	}
+	
 	//header
 	printf("%50s\n", title);
 	printf("%50s\n\n", "---------------------------------------");
 	printf("%18c\t%18c\n", fromUnit, toUnit);
 
 	//table contents
-	float currentTemp = minTemp;
-	for(; currentTemp <= maxTemp; currentTemp += stepSize) {
+	float currentTemp = startTemp;
+	bool shouldIterate;
+ 	while((shouldIterate = stepSize < 0 ? currentTemp >= endTemp : currentTemp <= endTemp) == true) {
 		float convertedTemp = (*conversionFunc)(currentTemp);
 		printf("%20.1f\t%20.1f\n", currentTemp, convertedTemp);
+		currentTemp += stepSize;
 	}
 }
 
-void printFahrToCelsConversionTable(float minTemp, float maxTemp,
+void printFahrToCelsConversionTable(float startTemp, float endTemp,
 	float stepSize) {
 	
 	char* title = "Fahrenheit to Celsius Conversion Table";
@@ -41,10 +70,10 @@ void printFahrToCelsConversionTable(float minTemp, float maxTemp,
 	char toUnit = 'C';
 
 	printConversionTable(title, fromUnit, toUnit, &convertFahrenheitToCelsius,
-		minTemp, maxTemp, stepSize); 		
+		startTemp, endTemp, stepSize); 		
 }
 
-void printCelsToFahrConversionTable(float minTemp, float maxTemp,
+void printCelsToFahrConversionTable(float startTemp, float endTemp,
 	float stepSize) {
 	
 	char* title = "Celsius to Fahrenheit Conversion Table";
@@ -52,7 +81,7 @@ void printCelsToFahrConversionTable(float minTemp, float maxTemp,
 	char toUnit = 'F';
 
 	printConversionTable(title, fromUnit, toUnit, &convertCelsiusToFahrenheit,
-		minTemp, maxTemp, stepSize); 		
+		startTemp, endTemp, stepSize); 		
 }
 
 /*
@@ -62,4 +91,6 @@ main() {
 	printFahrToCelsConversionTable(0,200,20);
 	printf("\n");
 	printCelsToFahrConversionTable(0,200,20);
+	printf("\n");
+	printCelsToFahrConversionTable(200,0,-20);
 }
