@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 
 /*
 *	Exercise 1-13
@@ -10,19 +9,35 @@
 
 #define MAX_WORD_LENGTH 10
 
+int min(int a, int b) {
+	return a <= b ? a : b;
+}
+
+int max(int a, int b) {
+	return a >= b ? a : b;
+}
+
 main() {
 	int lengths[MAX_WORD_LENGTH]; //lengths[i - 1] = # occurences of word length i
 	int c;
 	int currentWordLength = 0;
 	int maxFrequency = 0;
 
+	//set initial values of arr to 0
+	int index;
+	for(index = 0; index < MAX_WORD_LENGTH; index++) {
+		lengths[index] = 0;
+	}	
+
 	//calculate & store word lengths from input
 	while((c = getchar()) != EOF) {
-		if((currentWordLength > 0) && (c == '\t' || c == '\n' || c == ' ')) {
-			currentWordLength = min(MAX_WORD_LENGTH, currentWordLength);
-			lengths[currentWordLength - 1]++;
-			maxFrequency = max(maxFrequency, lengths[currentWordLength]);
-			currentWordLength = 0; 
+		if(c == '\t' || c == '\n' || c == ' ') {
+			if(currentWordLength > 0) {
+				currentWordLength = min(MAX_WORD_LENGTH, currentWordLength);
+				lengths[currentWordLength - 1]++;
+				maxFrequency = max(maxFrequency, lengths[currentWordLength - 1]);
+				currentWordLength = 0;
+			}
 		} else {
 			currentWordLength++;
 		}
@@ -30,12 +45,21 @@ main() {
 
 	//print vertical histogram
 	//start from top row to bottom, and fill in columns w/ value >= row
-	for(int row = maxFrequency; row > 0; row--) {
-		for(int col = 0; col < MAX_WORD_LENGTH; col++) {
+	int row, col;
+	for(row = maxFrequency; row > 0; row--) {
+		for(col = 0; col < MAX_WORD_LENGTH; col++) {
 			if(lengths[col] >= row) {
 				printf("*");
 			}
-			printf(" ");
-		} 
-	} 		
+			printf("\t");
+		}
+		printf("\n");
+	}
+
+	//column labels
+	for(col = 1; col <= MAX_WORD_LENGTH; col++) {
+		printf("%d\t", col);
+	}	
+
+	printf("\n");
 }
