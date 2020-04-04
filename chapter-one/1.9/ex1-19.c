@@ -49,10 +49,10 @@ int getLine(char* line) {
 */
 void reverse(char* str, int len) {
 	int midPoint = len % 2 == 0 ? len / 2 : (len / 2) + 1;
-	int backIndex;
+	int frontIndex, backIndex, temp;
 	for(backIndex = len; backIndex > midPoint; backIndex--) {
-		int frontIndex = len - backIndex;
-		int temp = str[frontIndex];
+		frontIndex = len - backIndex;
+		temp = str[frontIndex];
 		str[frontIndex] = str[backIndex - 1];
 		str[backIndex - 1] = temp;		
 	}
