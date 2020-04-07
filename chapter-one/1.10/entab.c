@@ -20,6 +20,37 @@
 
 int main() {
 	
-	
+	const int tsLen = DEFAULT_TAB_STOP_LENGTH;
+
+	int c;
+	int col = 0;
+	int spaces = 0;
+
+	while((c = getchar()) != EOF) {
+		
+		if(col % tsLen == 0) { //at tab stop
+			for(; spaces > 0; spaces -= tsLen) {
+				putchar('\t');
+			}
+			spaces = 0;
+		}
+
+		if(c == '\t') {
+			putchar('\t');
+			spaces = 0;
+			col += tsLen - (col % tsLen); //advance col to next tab stop
+		} else if(c == ' ') {
+			spaces++;
+			col++;
+		} else { //neither tab nor space
+			for(; spaces > 0; spaces--) {
+				putchar(' ');
+			}
+			putchar(c);
+			col = c == '\n' ? 0 : col + 1;
+		}
+		
+	}
+		
 	return 0;
 }
